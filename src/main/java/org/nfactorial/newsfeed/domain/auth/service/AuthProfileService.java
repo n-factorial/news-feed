@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 // TODO: Profile Service 구현해주세요!!!
 @Service
-public class ProfileService implements ProfileServiceApi {
+public class AuthProfileService implements AuthProfileServiceApi {
 	@Override
 	public boolean isNicknameDuplicated(String nickname) {
 		return false;
