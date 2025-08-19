@@ -9,6 +9,7 @@ public interface ProfileServiceApi {
 
 	@Builder
 	record CreateProfileCommand(
+		long accountId,
 		String nickname,
 		String introduce,
 		String mbti
