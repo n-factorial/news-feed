@@ -1,4 +1,4 @@
-package org.nfactorial.newsfeed.domain.auth;
+package org.nfactorial.newsfeed.domain.auth.entity;
 
 import java.time.LocalDateTime;
 
