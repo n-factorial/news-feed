@@ -1,8 +1,6 @@
 package org.nfactorial.newsfeed.domain.profile.service;
 
 import lombok.RequiredArgsConstructor;
-import org.nfactorial.newsfeed.common.code.ErrorCode;
-import org.nfactorial.newsfeed.common.exception.BusinessException;
 import org.nfactorial.newsfeed.domain.auth.entity.Account;
 import org.nfactorial.newsfeed.domain.profile.dto.request.CreateProfileCommand;
 import org.nfactorial.newsfeed.domain.profile.entity.Profile;
