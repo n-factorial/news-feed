@@ -1,13 +1,10 @@
-package org.nfactorial.newsfeed.common.security.adapter;
+package org.nfactorial.newsfeed.domain.auth.mock;
 
 import java.time.LocalDateTime;
 
 import org.nfactorial.newsfeed.domain.auth.entity.Account;
 
-import lombok.Data;
-
-@Data
-public class SecurityMockProfile {
+public class AuthMockProfile {
 	private Long id;
 	private Account account;
 	private String nickname;

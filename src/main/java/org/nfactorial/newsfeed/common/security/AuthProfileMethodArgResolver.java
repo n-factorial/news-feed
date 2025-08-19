@@ -2,7 +2,7 @@ package org.nfactorial.newsfeed.common.security;
 
 import org.nfactorial.newsfeed.common.code.ErrorCode;
 import org.nfactorial.newsfeed.common.exception.BusinessException;
-import org.nfactorial.newsfeed.common.security.adapter.SecurityMockProfile;
+import org.nfactorial.newsfeed.common.security.mock.SecurityMockProfile;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.nfactorial.newsfeed.domain.auth.dto.SignUpRequest;
-import org.nfactorial.newsfeed.domain.auth.service.AuthProfileService;
+import org.nfactorial.newsfeed.domain.auth.mock.AuthMockProfileService;
 import org.nfactorial.newsfeed.domain.auth.service.AuthProfileServiceApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,7 +37,7 @@ class AuthControllerIntegrationTest {
 	private ObjectMapper objectMapper;
 
 	@MockitoBean
-	private AuthProfileService profileService;
+	private AuthMockProfileService profileService;
 
 	@Nested
 	@DisplayName("회원가입")

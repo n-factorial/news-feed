@@ -1,4 +1,4 @@
-package org.nfactorial.newsfeed.common.security.adapter;
+package org.nfactorial.newsfeed.common.security.mock;
 
 import org.nfactorial.newsfeed.common.security.GetProfileFromAccountIdApi;
 import org.springframework.stereotype.Service;
