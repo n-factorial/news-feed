@@ -14,7 +14,7 @@ public class JwtUtil {
 	private static final String SECRET_KEY = "비밀키이다이것은비밀키이다이것은비밀키이다이것은비밀키이다이것은비밀키이다이것은"; // 비밀키
 	private static final long EXPIRATION_SECONDS = 3600;
 
-	private Algorithm algorithm;
+	private Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
 
 	public String createToken(final long accountId) {
 		final var issuedAt = Instant.now();
