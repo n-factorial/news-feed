@@ -36,7 +36,7 @@ public class AuthService {
 		String encodedPassword = passwordencoder.encode(signUpCommand.password());
 		Account newAccount = Account.signUp(signUpCommand.email(), encodedPassword);
 		Account savedAccount = accountRepository.save(newAccount);
-		ProfileServiceApi.createProfile createProfileCommand = ProfileServiceApi.createProfile.builder()
+		ProfileServiceApi.CreateProfileCommand createProfileCommand = ProfileServiceApi.CreateProfileCommand.builder()
 			.nickname(signUpCommand.nickname())
 			.mbti(signUpCommand.mbti())
 			.introduce(signUpCommand.introduce())

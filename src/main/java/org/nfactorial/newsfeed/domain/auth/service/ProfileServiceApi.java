@@ -5,10 +5,10 @@ import lombok.Builder;
 public interface ProfileServiceApi {
 	boolean isNicknameDuplicated(String nickname);
 
-	String createProfile(createProfile createProfileCommand);
+	String createProfile(CreateProfileCommand createProfileCommand);
 
 	@Builder
-	record createProfile(
+	record CreateProfileCommand(
 		String nickname,
 		String introduce,
 		String mbti

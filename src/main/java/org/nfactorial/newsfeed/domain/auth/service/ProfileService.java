@@ -11,7 +11,7 @@ public class ProfileService implements ProfileServiceApi {
 	}
 
 	@Override
-	public String createProfile(createProfile createProfileCommand) {
+	public String createProfile(CreateProfileCommand createProfileCommand) {
 		return createProfileCommand.nickname();
 	}
 
