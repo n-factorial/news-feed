@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthService {
 	private final AccountRepository accountRepository;
 	private final PasswordEncoder passwordencoder;
@@ -24,12 +26,14 @@ public class AuthService {
 		// 이메일 중복 여부 검사
 		boolean isEmailDuplicated = accountRepository.existsByEmail(signUpCommand.email());
 		if (isEmailDuplicated) {
+			log.error("Duplicated email: {}", signUpCommand.email());
 			throw new BusinessException(ErrorCode.EMAIL_DUPLICATED);
 		}
 
 		// 닉네임 중복 여부 검사
 		boolean isNicknameDuplicated = profileServiceApi.isNicknameDuplicated(signUpCommand.nickname());
 		if (isNicknameDuplicated) {
+			log.error("Duplicated nickname: {}", signUpCommand.nickname());
 			throw new BusinessException(ErrorCode.NICKNAME_DUPLICATED);
 		}
 
