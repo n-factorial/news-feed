@@ -10,14 +10,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.nfactorial.newsfeed.domain.auth.dto.SignUpRequest;
 import org.nfactorial.newsfeed.domain.auth.service.ProfileService;
+import org.nfactorial.newsfeed.domain.auth.service.ProfileServiceApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +36,7 @@ class AuthControllerIntegrationTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Mock
+	@MockitoBean
 	private ProfileService profileService;
 
 	@Nested
@@ -51,14 +52,20 @@ class AuthControllerIntegrationTest {
 				.nickname("testuser")
 				.build();
 
+			ProfileServiceApi.CreateProfileCommand createProfileCommand = ProfileServiceApi.CreateProfileCommand.builder()
+				.nickname("testuser")
+				.build();
+
 			given(profileService.isNicknameDuplicated(anyString())).willReturn(false);
+
+			given(profileService.createProfile(createProfileCommand)).willReturn("testuser");
 
 			// when & then
 			mockMvc.perform(post("/api/v1/auth/signup")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(request)))
 				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.code").value("ACCOUNT_CREATED"))
+				.andExpect(jsonPath("$.code").value("AUTH-201"))
 				.andExpect(jsonPath("$.data.email").value("test@example.com"))
 				.andExpect(jsonPath("$.data.nickname").value("testuser"))
 				.andDo(print());
@@ -90,7 +97,7 @@ class AuthControllerIntegrationTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(duplicateRequest)))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.code").value("EMAIL_DUPLICATED"))
+				.andExpect(jsonPath("$.code").value("AUTH-400"))
 				.andDo(print());
 		}
 
@@ -111,7 +118,7 @@ class AuthControllerIntegrationTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(request)))
 				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.code").value("NICKNAME_DUPLICATED"))
+				.andExpect(jsonPath("$.code").value("AUTH-400"))
 				.andDo(print());
 		}
 
