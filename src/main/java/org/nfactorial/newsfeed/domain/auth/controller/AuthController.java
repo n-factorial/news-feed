@@ -4,6 +4,7 @@ import org.nfactorial.newsfeed.common.code.SuccessCode;
 import org.nfactorial.newsfeed.common.dto.GlobalApiResponse;
 import org.nfactorial.newsfeed.domain.auth.dto.LoginCommand;
 import org.nfactorial.newsfeed.domain.auth.dto.LoginRequest;
+import org.nfactorial.newsfeed.domain.auth.dto.LoginResponse;
 import org.nfactorial.newsfeed.domain.auth.dto.SignUpCommand;
 import org.nfactorial.newsfeed.domain.auth.dto.SignUpRequest;
 import org.nfactorial.newsfeed.domain.auth.dto.SignUpResponse;
@@ -38,6 +39,6 @@ public class AuthController {
 	public GlobalApiResponse<?> login(@Valid @RequestBody LoginRequest loginRequest) {
 		LoginCommand loginCommand = LoginCommand.of(loginRequest);
 		String token = authService.login(loginCommand);
-		return GlobalApiResponse.of(SuccessCode.LOGIN_SUCCESS, token);
+		return GlobalApiResponse.of(SuccessCode.LOGIN_SUCCESS, new LoginResponse(token));
 	}
 }
