@@ -26,6 +26,7 @@ public class PostService {
 	public PostCreateResponse save(PostCreateRequest request, MockAuthProfileDto currentUserProfile) {
 
 		Post savedPost = postRepository.save(Post.of(request, currentUserProfile));
+
 		return PostCreateResponse.of(savedPost);
 	}
 
@@ -34,8 +35,7 @@ public class PostService {
 	public PostUpdateResponse update(Long postId, PostUpdateRequest request,
 		MockAuthProfileDto currentUserProfile) {
 
-		Post foundPost = postRepository.findById(postId)
-			.orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
+		Post foundPost = getPostById(postId);
 
 		// if (!ObjectUtils.nullSafeEquals(foundPost.getProfile().getId(), currentUserProfile.getId())) {
 		// 	throw new BusinessException(ErrorCode.POST_ACCESS_DENIED);
@@ -49,12 +49,30 @@ public class PostService {
 	@Transactional(readOnly = true)
 	public PostGetOneResponse findById(Long postId) {
 
-		Post foundPost = postRepository.findById(postId)
-			.orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
+		Post foundPost = getPostById(postId);
 
 		//TODO comment 받고 변경
 		int commentCount = 0;
 
 		return PostGetOneResponse.of(foundPost, commentCount);
 	}
+
+	@Transactional
+	public void deleteById(Long postId, MockAuthProfileDto currentUserProfile) {
+
+		Post foundPost = getPostById(postId);
+
+		// if (!ObjectUtils.nullSafeEquals(foundPost.getProfile().getId(), currentUserProfile.getId())) {
+		// 	throw new BusinessException(ErrorCode.POST_ACCESS_DENIED);
+		// }
+
+		postRepository.delete(foundPost);
+	}
+
+	// 포스트 찾기
+	private Post getPostById(Long postId) {
+		return postRepository.findById(postId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
+	}
+
 }
