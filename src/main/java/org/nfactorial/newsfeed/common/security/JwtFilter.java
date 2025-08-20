@@ -16,8 +16,8 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class JwtFilter implements Filter {
-	private static final String AUTH_HEADER = "Authorization";
-	private static final String BEARER_PREFIX = "Bearer ";
+	public static final String AUTH_HEADER = "Authorization";
+	public static final String BEARER_PREFIX = "Bearer ";
 	public static final String ACCOUNT_ID_ATTR = "accountId";
 
 	private final JwtUtil jwtUtil;
