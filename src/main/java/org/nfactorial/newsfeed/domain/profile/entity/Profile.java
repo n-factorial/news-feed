@@ -43,4 +43,8 @@ public class Profile {
         this.mbti = mbti;
         this.introduce = introduce;
     }
+
+	public void incrementFollowCount() {
+		this.followCount++;
+	}
 }
