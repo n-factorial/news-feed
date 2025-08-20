@@ -88,6 +88,7 @@ public class PostService implements PostServiceApi {
 			.orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 	}
 
+	@Transactional(readOnly = true)
 	public Map<Long, Long> countPostsByProfile(List<Profile> profiles) {
 		if (profiles == null || profiles.isEmpty()) {
 			return new HashMap<>();
