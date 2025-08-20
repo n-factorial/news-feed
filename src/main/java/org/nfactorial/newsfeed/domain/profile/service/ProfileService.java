@@ -79,7 +79,12 @@ public class ProfileService implements ProfileServiceApi {
 	public List<ProfileSummaryDto> findProfileSummariesByIds(List<Long> profileIds) {
 		List<Profile> profiles = profileRepository.findAllById(profileIds);
 
-		Map<Long, Long> postCounts = postRepository.countPostsByProfile(profiles);
+		//모든 프로필의 게시물 수를 두 번의 쿼리(프로필용, 게시물용)
+		Map<Long, Long> postCounts = postRepository.countPostsByProfile(profiles).stream()
+			.collect(Collectors.toMap(
+				dto -> dto.profileId(),
+				dto -> dto.postCount()
+			));
 
 		return profiles.stream()
 			.map(profile -> {
