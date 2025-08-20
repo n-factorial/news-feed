@@ -46,7 +46,7 @@ public class PostService implements PostServiceApi {
 			throw new BusinessException(ErrorCode.POST_ACCESS_DENIED);
 		}
 
-		foundPost.updateContent(request);
+		foundPost.updateContent(request.content());
 
 		return PostUpdateResponse.of(foundPost);
 	}
