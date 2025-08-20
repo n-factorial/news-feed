@@ -2,10 +2,8 @@ package org.nfactorial.newsfeed.domain.interaction.service;
 
 import org.nfactorial.newsfeed.common.code.ErrorCode;
 import org.nfactorial.newsfeed.common.exception.BusinessException;
-import org.nfactorial.newsfeed.domain.interaction.entity.Follow;
 import org.nfactorial.newsfeed.domain.interaction.entity.Like;
-import org.nfactorial.newsfeed.domain.interaction.repository.FollowRepository;
-import org.nfactorial.newsfeed.domain.interaction.repository.LikesRepository;
+import org.nfactorial.newsfeed.domain.interaction.repository.LikeRepository;
 import org.nfactorial.newsfeed.domain.post.entity.Post;
 import org.nfactorial.newsfeed.domain.post.service.PostService;
 import org.nfactorial.newsfeed.domain.profile.entity.Profile;
@@ -17,10 +15,9 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class InteractionService {
+public class LikeService {
 
-	private final LikesRepository likesRepository;
-	private final FollowRepository followRepository;
+	private final LikeRepository likeRepository;
 	private final PostService postService;
 	private final ProfileService profileService;
 
@@ -30,11 +27,11 @@ public class InteractionService {
 		Profile currentProfile = profileService.getProfileById(profileId);
 		Post currentPost = postService.getPostById(postId);
 
-		if (likesRepository.existsByPostIdAndProfileId(postId, profileId)) {
+		if (likeRepository.existsByPostIdAndProfileId(postId, profileId)) {
 			throw new BusinessException(ErrorCode.LIKE_ALREADY_EXISTS);
 		}
 
-		likesRepository.save(Like.of(currentPost, currentProfile));
+		likeRepository.save(Like.of(currentPost, currentProfile));
 		currentPost.incrementLikeCount();
 	}
 
@@ -44,28 +41,10 @@ public class InteractionService {
 		Profile savedProfile = profileService.getProfileById(profileId);
 		Post savedPost = postService.getPostById(postId);
 
-		Like savedLike = likesRepository.findByPostAndProfile(savedPost, savedProfile)
+		Like savedLike = likeRepository.findByPostAndProfile(savedPost, savedProfile)
 			.orElseThrow(() -> new BusinessException(ErrorCode.LIKE_NOT_FOUND));
 
-		likesRepository.delete(savedLike);
+		likeRepository.delete(savedLike);
 		savedPost.decrementLikeCount();
-	}
-
-	@Transactional
-	public void followProfile(Long followerId, Long followingId) {
-
-		if (followerId.equals(followingId)) {
-			throw new BusinessException(ErrorCode.CANNOT_FOLLOW_SELF);
-		}
-
-		Profile follower = profileService.getProfileById(followerId);
-		Profile following = profileService.getProfileById(followingId);
-
-		if (followRepository.existsByFollowerAndFollowing(follower, following)) {
-			throw new BusinessException(ErrorCode.FOLLOWING_ALREADY_EXISTS);
-		}
-
-		followRepository.save(Follow.of(follower, following));
-		follower.incrementFollowCount();
 	}
 }
