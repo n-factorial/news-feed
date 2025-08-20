@@ -6,6 +6,7 @@ import org.nfactorial.newsfeed.common.code.ErrorCode;
 import org.nfactorial.newsfeed.common.exception.BusinessException;
 import org.nfactorial.newsfeed.domain.post.service.PostService;
 import org.nfactorial.newsfeed.domain.profile.dto.request.CreateProfileCommand;
+import org.nfactorial.newsfeed.domain.profile.dto.request.UpdateProfileCommand;
 import org.nfactorial.newsfeed.domain.profile.dto.response.ProfileResponse;
 import org.nfactorial.newsfeed.domain.profile.entity.Profile;
 import org.nfactorial.newsfeed.domain.profile.repository.ProfileRepository;
@@ -52,5 +53,20 @@ public class ProfileService implements ProfileServiceApi {
 	public Profile getProfileById(long profileId) {
 		return profileRepository.findById(profileId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.PROFILE_NOT_FOUND));
+	}
+
+	@Override
+	@Transactional
+	public Profile updateProfile(long profileId, UpdateProfileCommand command) {
+		Profile profile = profileRepository.findById(profileId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.PROFILE_NOT_FOUND));
+
+		if (profileRepository.existsByNickname(command.nickname()) && !profile.getNickname().equals(command.nickname())) {
+			throw new BusinessException(ErrorCode.NICKNAME_DUPLICATED);
+		}
+
+		profile.update(command.nickname(), command.mbti(), command.introduce());
+
+		return profile;
 	}
 }
