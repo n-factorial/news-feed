@@ -76,10 +76,4 @@ public class PostService implements PostServiceApi {
 		return postRepository.findById(postId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 	}
-
-	@Transactional
-	//TODO 프로필의 게시물 수 계산을 구현해주세요!
-	public long countPostsByProfile(Profile profile) {
-		return 0;
-	}
 }

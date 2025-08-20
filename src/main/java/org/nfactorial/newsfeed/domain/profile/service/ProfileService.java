@@ -49,12 +49,8 @@ public class ProfileService implements ProfileServiceApi {
 
 	@Override
 	@Transactional(readOnly = true)
-	public ProfileResponse getProfileById(long profileId) {
-		Profile profile = profileRepository.findById(profileId)
+	public Profile getProfileById(long profileId) {
+		return profileRepository.findById(profileId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.PROFILE_NOT_FOUND));
-
-		long postCount = postService.countPostsByProfile(profile);
-
-		return ProfileResponse.of(profile, (int) postCount);
 	}
 }

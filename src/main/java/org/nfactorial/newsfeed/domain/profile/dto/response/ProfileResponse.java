@@ -12,13 +12,4 @@ public record ProfileResponse(
 	int followCount,
 	int postCount
 ) {
-	public static ProfileResponse of(Profile profile, int postCount) {
-		return ProfileResponse.builder()
-			.nickname(profile.getNickname())
-			.mbti(profile.getMbti())
-			.introduce(profile.getIntroduce())
-			.followCount(profile.getFollowCount())
-			.postCount(postCount)
-			.build();
-	}
 }

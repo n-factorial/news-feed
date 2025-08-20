@@ -1,7 +1,7 @@
 package org.nfactorial.newsfeed.domain.profile.service;
 
 import org.nfactorial.newsfeed.domain.profile.dto.request.CreateProfileCommand;
-import org.nfactorial.newsfeed.domain.profile.dto.response.ProfileResponse;
+import org.nfactorial.newsfeed.domain.profile.entity.Profile;
 
 public interface ProfileServiceApi {
 	boolean isNicknameDuplicated(String nickname);
@@ -10,5 +10,5 @@ public interface ProfileServiceApi {
 
 	void deleteFromAccountId(long accountId);
 
-	ProfileResponse getProfileById(long profileId);
+	Profile getProfileById(long profileId);
 }
