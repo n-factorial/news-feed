@@ -70,7 +70,8 @@ public class PostService {
 	}
 
 	// 포스트 찾기
-	private Post getPostById(Long postId) {
+	@Transactional
+	public Post getPostById(Long postId) {
 		return postRepository.findById(postId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 	}
