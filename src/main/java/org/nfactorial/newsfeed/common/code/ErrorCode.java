@@ -13,7 +13,9 @@ public enum ErrorCode implements GlobalResponseCode {
 	NICKNAME_DUPLICATED("AUTH-400", "중복되는 닉네임입니다.", HttpStatus.BAD_REQUEST),
 	INVALID_TOKEN("AUTH-400", "유효하지 않은 토큰입니다.", HttpStatus.BAD_REQUEST),
 	LOGIN_FAILED("AUTH-401-1", "로그인에 실패하였습니다.", HttpStatus.UNAUTHORIZED),
-	ACCOUNT_NOT_FOUND("AUTH-404", "계정을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+	ACCOUNT_NOT_FOUND("AUTH-404", "계정을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+	POST_NOT_FOUND("POST-404", "해당 게시글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
+	POST_ACCESS_DENIED("POST-403", "게시글에 대한 권한이 없습니다.", HttpStatus.FORBIDDEN);;
 
 	private final String code;
 	private final String message;
