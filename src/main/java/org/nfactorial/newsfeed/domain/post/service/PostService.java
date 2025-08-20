@@ -10,6 +10,7 @@ import org.nfactorial.newsfeed.domain.post.dto.response.PostUpdateResponse;
 import org.nfactorial.newsfeed.domain.post.entity.Post;
 import org.nfactorial.newsfeed.domain.post.mock.MockAuthProfileDto;
 import org.nfactorial.newsfeed.domain.post.repository.PostRepository;
+import org.nfactorial.newsfeed.domain.profile.entity.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,5 +57,10 @@ public class PostService {
 		int commentCount = 0;
 
 		return PostGetOneResponse.of(foundPost, commentCount);
+	}
+
+	//TODO 프로필의 게시물 수 계산을 구현해주세요!
+	public long countPostsByProfile(Profile profile) {
+		return 0;
 	}
 }
