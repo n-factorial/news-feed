@@ -1,11 +1,11 @@
-package org.nfactorial.newsfeed.domain.profile.dto.response;
+package org.nfactorial.newsfeed.domain.profile.dto;
 
 import org.nfactorial.newsfeed.domain.profile.entity.Profile;
 
 import lombok.Builder;
 
 @Builder
-public record ProfileSummaryResponse(
+public record ProfileSummaryDto(
 	long id,
 	String nickname,
 	String introduce,
@@ -13,8 +13,8 @@ public record ProfileSummaryResponse(
 	int followCount,
 	long postCount
 ) {
-	public static ProfileSummaryResponse of(Profile profile, long postCount) {
-		return ProfileSummaryResponse.builder()
+	public static ProfileSummaryDto of(Profile profile, long postCount) {
+		return ProfileSummaryDto.builder()
 			.id(profile.getId())
 			.nickname(profile.getNickname())
 			.introduce(profile.getIntroduce())

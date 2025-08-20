@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.nfactorial.newsfeed.domain.profile.dto.request.CreateProfileCommand;
 import org.nfactorial.newsfeed.domain.profile.dto.request.UpdateProfileCommand;
-import org.nfactorial.newsfeed.domain.profile.dto.response.ProfileSummaryResponse;
+import org.nfactorial.newsfeed.domain.profile.dto.ProfileSummaryDto;
 import org.nfactorial.newsfeed.domain.profile.entity.Profile;
 
 public interface ProfileServiceApi {
@@ -18,5 +18,5 @@ public interface ProfileServiceApi {
 
 	Profile updateProfile(long profileId, UpdateProfileCommand command);
 
-	List<ProfileSummaryResponse> findProfileSummariesByIds(List<Long> profileIds);
+	List<ProfileSummaryDto> findProfileSummariesByIds(List<Long> profileIds);
 }

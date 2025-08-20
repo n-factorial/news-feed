@@ -11,7 +11,7 @@ import org.nfactorial.newsfeed.common.exception.BusinessException;
 import org.nfactorial.newsfeed.domain.post.repository.PostRepository;
 import org.nfactorial.newsfeed.domain.profile.dto.request.CreateProfileCommand;
 import org.nfactorial.newsfeed.domain.profile.dto.request.UpdateProfileCommand;
-import org.nfactorial.newsfeed.domain.profile.dto.response.ProfileSummaryResponse;
+import org.nfactorial.newsfeed.domain.profile.dto.ProfileSummaryDto;
 import org.nfactorial.newsfeed.domain.profile.entity.Profile;
 import org.nfactorial.newsfeed.domain.profile.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
@@ -76,7 +76,7 @@ public class ProfileService implements ProfileServiceApi {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<ProfileSummaryResponse> findProfileSummariesByIds(List<Long> profileIds) {
+	public List<ProfileSummaryDto> findProfileSummariesByIds(List<Long> profileIds) {
 		List<Profile> profiles = profileRepository.findAllById(profileIds);
 
 		Map<Long, Long> postCounts = postRepository.countPostsByProfile(profiles);
@@ -84,7 +84,7 @@ public class ProfileService implements ProfileServiceApi {
 		return profiles.stream()
 			.map(profile -> {
 				long postCount = postCounts.getOrDefault(profile.getId(), 0L);
-				return ProfileSummaryResponse.of(profile, postCount);
+				return ProfileSummaryDto.of(profile, postCount);
 			})
 			.collect(Collectors.toList());
 	}
