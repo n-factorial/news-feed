@@ -44,9 +44,24 @@ public class CommentService implements CommentServiceApi {
 	}
 
 	@Transactional
-	public void deleteById(long commentId) {
+	public void deleteById(long commentId, long profileId) {
+		Comment comment = getOwnedComment(commentId, profileId);
+		commentRepository.delete(comment);
+	}
+
+	@Transactional
+	public String updateById(long commentId, String content, long profileId) {
+		Comment comment = getOwnedComment(commentId, profileId);
+		comment.updateContent(content);
+		return comment.getContent();
+	}
+
+	private Comment getOwnedComment(long commentId, long profileId) {
 		Comment comment = commentRepository.findById(commentId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.COMMENT_NOT_FOUND));
-		commentRepository.delete(comment);
+		if (comment.getProfile().getId() != profileId) {
+			throw new BusinessException(ErrorCode.COMMENT_NOT_YOURS);
+		}
+		return comment;
 	}
 }
