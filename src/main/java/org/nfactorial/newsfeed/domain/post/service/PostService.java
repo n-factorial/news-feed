@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class PostService {
+public class PostService implements PostServiceApi {
 
 	private final PostRepository postRepository;
 
@@ -70,8 +70,9 @@ public class PostService {
 	}
 
 	// 포스트 찾기
+	@Override
 	@Transactional
-	public Post getPostById(Long postId) {
+	public Post getPostById(long postId) {
 		return postRepository.findById(postId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 	}
