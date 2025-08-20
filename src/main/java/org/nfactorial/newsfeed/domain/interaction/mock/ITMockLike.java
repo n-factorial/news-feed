@@ -1,9 +1,7 @@
-package org.nfactorial.newsfeed.domain.interaction.entity;
+package org.nfactorial.newsfeed.domain.interaction.mock;
 
 import java.time.LocalDateTime;
 
-import org.nfactorial.newsfeed.domain.post.entity.Post;
-import org.nfactorial.newsfeed.domain.profile.entity.Profile;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -20,39 +18,38 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @Entity
-@Getter
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "likes", uniqueConstraints = {
+@Table(name = "itmock_likes", uniqueConstraints = {
 	@UniqueConstraint(
 		name = "like_uk",
 		columnNames = {"post_id", "profile_id"}
 	)
 })
-public class Like {
-
+public class ITMockLike {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
-	private Post post;
+	private ITMockPost post;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
-	private Profile profile;
+	private ITMockProfile profile;
 
 	@CreatedDate
 	@Column(updatable = false)
 	private LocalDateTime createdAt;
 
-	public static Like of(Post post, Profile profile) {
-		return new Like(null, post, profile, null);
+	public static ITMockLike of(ITMockPost post, ITMockProfile profile) {
+		return new ITMockLike(null, post, profile, null);
 	}
 }
