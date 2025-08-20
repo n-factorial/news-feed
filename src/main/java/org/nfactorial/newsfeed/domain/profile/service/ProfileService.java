@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.nfactorial.newsfeed.common.code.ErrorCode;
 import org.nfactorial.newsfeed.common.exception.BusinessException;
+import org.nfactorial.newsfeed.domain.post.dto.PostCountDto;
 import org.nfactorial.newsfeed.domain.post.repository.PostRepository;
 import org.nfactorial.newsfeed.domain.profile.dto.request.CreateProfileCommand;
 import org.nfactorial.newsfeed.domain.profile.dto.request.UpdateProfileCommand;
@@ -82,8 +83,8 @@ public class ProfileService implements ProfileServiceApi {
 		//모든 프로필의 게시물 수를 두 번의 쿼리(프로필용, 게시물용)
 		Map<Long, Long> postCounts = postRepository.countPostsByProfile(profiles).stream()
 			.collect(Collectors.toMap(
-				dto -> dto.profileId(),
-				dto -> dto.postCount()
+				PostCountDto::profileId,
+				PostCountDto::postCount
 			));
 
 		return profiles.stream()
