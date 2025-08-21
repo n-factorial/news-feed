@@ -23,18 +23,18 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/posts")
 public class PostCommentController {
     private final PostCommentService postCommentService;
 
-    @GetMapping("/posts/{postId}/comments")
+    @GetMapping("/{postId}/comments")
     public GlobalApiResponse<?> getCommentsFromPost(@PathVariable("postId")
     long postId) {
         CommentListByPostResult result = postCommentService.commentListByPost(postId);
         return GlobalApiResponse.of(SuccessCode.OK, GetCommentsFromPostResponse.of(result));
     }
 
-    @PostMapping("/posts/{postId}/comments")
+    @PostMapping("/{postId}/comments")
     public GlobalApiResponse<?> writeComment(@PathVariable("postId")
     long postId,
         @AuthProfile
