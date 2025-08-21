@@ -9,6 +9,7 @@ import org.nfactorial.newsfeed.common.code.ErrorCode;
 import org.nfactorial.newsfeed.common.exception.BusinessException;
 import org.nfactorial.newsfeed.common.security.AuthProfileDto;
 import org.nfactorial.newsfeed.domain.comment.service.CommentServiceApi;
+import org.nfactorial.newsfeed.domain.interaction.service.InteractionQueryServiceApi;
 import org.nfactorial.newsfeed.domain.post.dto.PostCountDto;
 import org.nfactorial.newsfeed.domain.post.dto.request.PostCreateRequest;
 import org.nfactorial.newsfeed.domain.post.dto.request.PostUpdateRequest;
@@ -35,6 +36,7 @@ public class PostService implements PostServiceApi {
 	private final PostRepository postRepository;
 	private final CommentServiceApi commentService;
 	private final ProfileServiceApi profileService;
+	private final InteractionQueryServiceApi interactionQueryService;
 
 	@Transactional
 	public PostCreateResponse save(PostCreateRequest request, AuthProfileDto currentUserProfile) {
@@ -62,16 +64,18 @@ public class PostService implements PostServiceApi {
 	}
 
 	@Transactional
-	public PostGetOneResponse findById(Long postId, HttpServletRequest request, HttpServletResponse response) {
+	public PostGetOneResponse findById(Long postId) {
 
-		// 조회수 중복 방지 + 증가
-		viewCountUp(postId, request, response);
+		// 조회수 증가
+		viewCountUp(postId);
 
 		Post foundPost = getPostById(postId);
 
+		boolean hasLikedPost = interactionQueryService.hasLikedPost(foundPost.getId(), foundPost.getProfile().getId());
+
 		int commentCount = commentService.getCommentCount(foundPost);
 
-		return PostGetOneResponse.of(foundPost, commentCount);
+		return PostGetOneResponse.of(foundPost, commentCount, hasLikedPost);
 	}
 
 	@Transactional
@@ -124,32 +128,4 @@ public class PostService implements PostServiceApi {
 		postRepository.incrementViewCount(id);
 	}
 
-	//게시글 조회 시 새로고침으로 조회수가 올라가지 않도록 쿠키 확인
-	@Transactional
-	protected void viewCountUp(Long id, HttpServletRequest request, HttpServletResponse response) {
-		Cookie oldCookie = null;
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("postView")) {
-					oldCookie = cookie;
-				}
-			}
-		}
-		if (oldCookie != null) {
-			if (!oldCookie.getValue().contains("[" + id.toString() + "]")) {
-				postRepository.incrementViewCount(id);
-				oldCookie.setValue(oldCookie.getValue() + "_[" + id + "]");
-				oldCookie.setPath("/");
-				oldCookie.setMaxAge(60 * 60 * 24); //24시간 유지
-				response.addCookie(oldCookie);
-			}
-		} else {
-			postRepository.incrementViewCount(id);
-			Cookie newCookie = new Cookie("postView", "[" + id + "]");
-			newCookie.setPath("/");
-			newCookie.setMaxAge(60 * 60 * 24); //24시간 유지
-			response.addCookie(newCookie);
-		}
-	}
 }

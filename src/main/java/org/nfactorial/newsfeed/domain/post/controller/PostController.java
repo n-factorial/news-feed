@@ -55,10 +55,9 @@ public class PostController {
 
 	@GetMapping("/{postId}")
 	@ResponseStatus(HttpStatus.OK)
-	public GlobalApiResponse<PostGetOneResponse> findById(@PathVariable Long postId, HttpServletRequest httpRequest,
-		HttpServletResponse httpResponse) {
+	public GlobalApiResponse<PostGetOneResponse> findById(@PathVariable Long postId) {
 
-		PostGetOneResponse response = postService.findById(postId, httpRequest, httpResponse);
+		PostGetOneResponse response = postService.findById(postId);
 
 		return GlobalApiResponse.of(SuccessCode.OK, response);
 	}
