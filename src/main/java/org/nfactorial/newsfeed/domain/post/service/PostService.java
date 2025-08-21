@@ -6,8 +6,6 @@ import java.util.Map;
 import org.nfactorial.newsfeed.common.code.ErrorCode;
 import org.nfactorial.newsfeed.common.exception.BusinessException;
 import org.nfactorial.newsfeed.common.security.AuthProfileDto;
-import org.nfactorial.newsfeed.domain.comment.service.CommentServiceApi;
-import org.nfactorial.newsfeed.domain.interaction.service.InteractionQueryServiceApi;
 import org.nfactorial.newsfeed.domain.post.dto.request.PostUpdateRequest;
 import org.nfactorial.newsfeed.domain.post.dto.response.PostUpdateResponse;
 import org.nfactorial.newsfeed.domain.post.entity.Post;
