@@ -13,7 +13,6 @@ import org.nfactorial.newsfeed.domain.post.repository.PostRepository;
 import org.nfactorial.newsfeed.domain.postcomment.dto.request.WriteCommentToPostRequest;
 import org.nfactorial.newsfeed.domain.postcomment.dto.response.WriteCommentToPostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
