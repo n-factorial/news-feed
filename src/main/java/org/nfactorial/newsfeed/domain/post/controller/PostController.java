@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -53,9 +55,10 @@ public class PostController {
 
 	@GetMapping("/{postId}")
 	@ResponseStatus(HttpStatus.OK)
-	public GlobalApiResponse<PostGetOneResponse> findById(@PathVariable Long postId) {
+	public GlobalApiResponse<PostGetOneResponse> findById(@PathVariable Long postId, HttpServletRequest httpRequest,
+		HttpServletResponse httpResponse) {
 
-		PostGetOneResponse response = postService.findById(postId);
+		PostGetOneResponse response = postService.findById(postId, httpRequest, httpResponse);
 
 		return GlobalApiResponse.of(SuccessCode.OK, response);
 	}

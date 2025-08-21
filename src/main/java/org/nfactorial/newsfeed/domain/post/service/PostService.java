@@ -23,6 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -58,8 +61,11 @@ public class PostService implements PostServiceApi {
 		return PostUpdateResponse.of(foundPost);
 	}
 
-	@Transactional(readOnly = true)
-	public PostGetOneResponse findById(Long postId) {
+	@Transactional
+	public PostGetOneResponse findById(Long postId, HttpServletRequest request, HttpServletResponse response) {
+
+		// 조회수 중복 방지 + 증가
+		viewCountUp(postId, request, response);
 
 		Post foundPost = getPostById(postId);
 
@@ -110,5 +116,40 @@ public class PostService implements PostServiceApi {
 				Profile::getId,
 				profile -> countMap.getOrDefault(profile.getId(), 0L)
 			));
+	}
+
+	//게시글 조회 시 modifiedAt 이 변경되지 않도록 쿼리 실행
+	@Transactional
+	public void viewCountUp(Long id) {
+		postRepository.incrementViewCount(id);
+	}
+
+	//게시글 조회 시 새로고침으로 조회수가 올라가지 않도록 쿠키 확인
+	@Transactional
+	protected void viewCountUp(Long id, HttpServletRequest request, HttpServletResponse response) {
+		Cookie oldCookie = null;
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("postView")) {
+					oldCookie = cookie;
+				}
+			}
+		}
+		if (oldCookie != null) {
+			if (!oldCookie.getValue().contains("[" + id.toString() + "]")) {
+				postRepository.incrementViewCount(id);
+				oldCookie.setValue(oldCookie.getValue() + "_[" + id + "]");
+				oldCookie.setPath("/");
+				oldCookie.setMaxAge(60 * 60 * 24); //24시간 유지
+				response.addCookie(oldCookie);
+			}
+		} else {
+			postRepository.incrementViewCount(id);
+			Cookie newCookie = new Cookie("postView", "[" + id + "]");
+			newCookie.setPath("/");
+			newCookie.setMaxAge(60 * 60 * 24); //24시간 유지
+			response.addCookie(newCookie);
+		}
 	}
 }
