@@ -7,7 +7,6 @@ import org.nfactorial.newsfeed.common.exception.BusinessException;
 import org.nfactorial.newsfeed.domain.interaction.dto.response.FollowStatusResponse;
 import org.nfactorial.newsfeed.domain.interaction.repository.FollowRepository;
 import org.nfactorial.newsfeed.domain.interaction.repository.LikeRepository;
-import org.nfactorial.newsfeed.domain.post.service.PostService;
 import org.nfactorial.newsfeed.domain.profile.dto.ProfileSummaryDto;
 import org.nfactorial.newsfeed.domain.profile.entity.Profile;
 import org.nfactorial.newsfeed.domain.profile.service.ProfileServiceApi;
