@@ -61,10 +61,9 @@ public class PostService implements PostServiceApi {
 	}
 
 	@Transactional
-	public PostGetOneResponse findById(Long postId) {
+	public PostGetOneResponse viewPost(Long postId) {
 
-		// 조회수 증가
-		viewCountUp(postId);
+		postRepository.incrementViewCount(postId);
 
 		Post foundPost = getPostById(postId);
 
@@ -117,12 +116,6 @@ public class PostService implements PostServiceApi {
 				Profile::getId,
 				profile -> countMap.getOrDefault(profile.getId(), 0L)
 			));
-	}
-
-	//게시글 조회 시 modifiedAt 이 변경되지 않도록 쿼리 실행
-	@Transactional
-	public void viewCountUp(Long id) {
-		postRepository.incrementViewCount(id);
 	}
 
 }
