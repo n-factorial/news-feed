@@ -15,6 +15,16 @@
 
 ---
 
+<!-- 추가: ERD 다이어그램 (가운데 정렬, 반응형) -->
+<figure style="text-align:center;margin:24px 0;">
+  <a href="erd.png" title="ERD (Click to open)">
+    <img src="erd.png" alt="ERD - Entity Relationship Diagram" style="max-width:100%;height:auto;border:1px solid #e6e6e6;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.06);">
+  </a>
+  <figcaption style="font-size:0.95rem;color:#555;margin-top:8px;">
+    ERD (Entity Relationship Diagram) — 주요 엔티티와 관계도.
+  </figcaption>
+</figure>
+
 ## 📖 목차
 
 -   [🌟 News Feed - 현대적이고 확장 가능한 소셜 미디어 플랫폼](#-news-feed---현대적이고-확장-가능한-소셜-미디어-플랫폼)
@@ -351,8 +361,8 @@ JWT 토큰 관리, 비밀번호 암호화, 토큰 블랙리스트 등 엔터프�
 ## 📞 문의
 
 프로젝트에 대한 질문이나 제안이 있으시면, 다음 연락처로 문의해주세요:
--   **이메일**: **팀장님 이메일 주소**
--   **GitHub Issues**: [Issues Page](https://github.com/n-factorial/news-feed/issues) (실제 레포지토리 URL로 변경해주세요.)
+-   **이메일**: [팀장님](sooh59599@gmail.com)
+-   **GitHub Issues**: [Issues Page](https://github.com/n-factorial/news-feed/issues)
 
 ---
 
