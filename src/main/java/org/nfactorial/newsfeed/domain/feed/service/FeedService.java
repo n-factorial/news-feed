@@ -7,6 +7,7 @@ import org.nfactorial.newsfeed.common.code.ErrorCode;
 import org.nfactorial.newsfeed.common.exception.BusinessException;
 import org.nfactorial.newsfeed.domain.feed.dto.request.FeedPageRequest;
 import org.nfactorial.newsfeed.domain.feed.dto.response.FeedAccountPostProjection;
+import org.nfactorial.newsfeed.domain.feed.dto.response.FeedFollowPostResponse;
 import org.nfactorial.newsfeed.domain.feed.dto.response.FeedProfileInfoResponse;
 import org.nfactorial.newsfeed.domain.feed.dto.response.FeedResponseProjection;
 import org.nfactorial.newsfeed.domain.feed.dto.response.FeedResponse;
@@ -16,6 +17,7 @@ import org.nfactorial.newsfeed.domain.feed.dto.response.PageResponseDto;
 import org.nfactorial.newsfeed.domain.feed.repository.FeedRepository;
 import org.nfactorial.newsfeed.domain.profile.entity.Profile;
 import org.nfactorial.newsfeed.domain.profile.repository.ProfileRepository;
+import org.nfactorial.newsfeed.domain.profile.service.ProfileService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class FeedService {
 
 	private final FeedRepository feedRepository;
-	private final ProfileRepository profileRepository;
+	private final ProfileService profileService;
 
 	//피드 전체 조회
 	public PageResponseDto<FeedResponse> findAll(FeedPageRequest feedPageRequest) {
@@ -52,8 +54,7 @@ public class FeedService {
 	public FeedSpecificAccountResponse findAccountPostAll(Long profileId,
 		FeedPageRequest feedPageRequest) {
 
-		Profile profile = profileRepository.findById(profileId)
-			.orElseThrow(() -> new BusinessException(ErrorCode.PROFILE_NOT_FOUND));
+		Profile profile = profileService.getProfileById(profileId);
 
 		long offset = (feedPageRequest.getPageNumber() - 1) * feedPageRequest.getSize();
 		long limit = feedPageRequest.getSize();
@@ -78,4 +79,23 @@ public class FeedService {
 
 		return FeedSpecificAccountResponse.of(feedProfileInfoResponse, postsPage);
 	}
+
+	//팔로우한 사용자들의 전체 포스트 조회
+	public PageResponseDto<FeedFollowPostResponse> findFollowPostAll(Long followerId, FeedPageRequest feedPageRequest) {
+		long offset = (feedPageRequest.getPageNumber() - 1) * feedPageRequest.getSize();
+		long limit = feedPageRequest.getSize();
+
+		Profile profile = profileService.getProfileById(followerId);
+
+		List<FeedFollowPostResponse> followerPost = feedRepository.findFollowPostAll(profile.getId())
+			.stream().map(follow -> FeedFollowPostResponse.of(
+				follow.getNickname(), follow.getContents(), follow.getLikeCount(),
+				follow.getCommentCount(), follow.getCreatedAt()
+			)).collect(Collectors.toList());
+
+		Long followPostCount = feedRepository.countFollowPostAll(profile.getId());
+
+		return PageResponseDto.of(offset, limit, followPostCount, followerPost);
+	}
+
 }

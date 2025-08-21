@@ -4,7 +4,7 @@ import org.nfactorial.newsfeed.common.code.SuccessCode;
 import org.nfactorial.newsfeed.common.dto.GlobalApiResponse;
 import org.nfactorial.newsfeed.common.security.AuthProfile;
 import org.nfactorial.newsfeed.common.security.AuthProfileDto;
-import org.nfactorial.newsfeed.domain.interaction.service.InteractionService;
+import org.nfactorial.newsfeed.domain.interaction.service.LikeService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,17 +14,17 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class InteractionController {
+public class LikeController {
 
-	private final InteractionService interactionService;
+	private final LikeService likeService;
 
 	@PostMapping("/api/v1/posts/{postId}/likes")
 	public GlobalApiResponse<Void> addLike(
 		@PathVariable Long postId,
 		@AuthProfile AuthProfileDto currentProfile) {
 
-		interactionService.addLike(postId, currentProfile.profileId());
-		return new GlobalApiResponse<>(SuccessCode.CREATED.getCode(), SuccessCode.CREATED.getMessage(), null);
+		likeService.addLike(postId, currentProfile.profileId());
+		return GlobalApiResponse.of(SuccessCode.CREATED, null);
 	}
 
 	@DeleteMapping("/api/v1/posts/{postId}/likes")
@@ -32,7 +32,7 @@ public class InteractionController {
 		@PathVariable Long postId,
 		@AuthProfile AuthProfileDto currentProfile) {
 
-		interactionService.cancelLike(postId, currentProfile.profileId());
-		return new GlobalApiResponse<>(SuccessCode.OK.getCode(), SuccessCode.OK.getMessage(), null);
+		likeService.cancelLike(postId, currentProfile.profileId());
+		return GlobalApiResponse.of(SuccessCode.OK, null);
 	}
 }
