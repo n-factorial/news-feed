@@ -1,4 +1,4 @@
-package org.nfactorial.newsfeed.domain.postcomment.dto;
+package org.nfactorial.newsfeed.domain.postcomment.dto.result;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public record CommentListByPostResult(
 		return new CommentListByPostResult(commentList);
 	}
 
-	record SimpleComment(
+	public record SimpleComment(
 		long id,
 		String nickname,
 		String content) {

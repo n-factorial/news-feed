@@ -1,6 +1,8 @@
-package org.nfactorial.newsfeed.domain.postcomment.dto;
+package org.nfactorial.newsfeed.domain.postcomment.dto.response;
 
 import java.time.LocalDateTime;
+
+import org.nfactorial.newsfeed.domain.postcomment.dto.result.WriteCommentToPostResult;
 
 import lombok.Builder;
 
