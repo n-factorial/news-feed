@@ -33,8 +33,8 @@ public class InteractionQueryService implements InteractionQueryServiceApi {
 		}
 
 		// profileService의 메소드에 id 존재여부 검증 위임, 별도의 서비스 계층 exists 메소드 생성 x 목적
-		Profile follower = profileService.getProfileById(followerId);
-		Profile following = profileService.getProfileById(followingId);
+		Profile follower = profileService.getProfileEntityById(followerId);
+		Profile following = profileService.getProfileEntityById(followingId);
 
 		return FollowStatusResponse.of(followRepository.existsByFollowerAndFollowing(follower, following));
 	}

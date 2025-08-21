@@ -38,7 +38,7 @@ public class PostService implements PostServiceApi {
 	@Transactional
 	public PostCreateResponse save(PostCreateRequest request, AuthProfileDto currentUserProfile) {
 		long profileId = currentUserProfile.profileId();
-		Profile foundProfile = profileService.getProfileById(profileId);
+		Profile foundProfile = profileService.getProfileEntityById(profileId);
 
 		Post savedPost = postRepository.save(Post.of(request, foundProfile));
 
@@ -94,28 +94,40 @@ public class PostService implements PostServiceApi {
 			.orElseThrow(() -> new BusinessException(ErrorCode.POST_NOT_FOUND));
 	}
 
-	@Transactional(readOnly = true)
-	public Map<Long, Long> countPostsByProfile(List<Profile> profiles) {
-		if (profiles == null || profiles.isEmpty()) {
-			return new HashMap<>();
-		}
+	//TODO: countPostsByProfile 없애서 밑에 다시 구현 부탁드립니다
+	// @Transactional(readOnly = true)
+	// public Map<Long, Long> countPostsByProfile(List<Profile> profiles) {
+	// 	if (profiles == null || profiles.isEmpty()) {
+	// 		return new HashMap<>();
+	// 	}
+	//
+	// 	// 1. DTO로 카운트 조회
+	// 	List<PostCountDto> postCounts = postRepository.countPostsByProfile(profiles);
+	//
+	// 	// 2. DTO를 Map으로 변환
+	// 	Map<Long, Long> countMap = postCounts.stream()
+	// 		.collect(Collectors.toMap(
+	// 			PostCountDto::profileId,
+	// 			PostCountDto::postCount
+	// 		));
+	//
+	// 	// 3. 포스트가 없는 프로필들도 0으로 포함
+	// 	return profiles.stream()
+	// 		.collect(Collectors.toMap(
+	// 			Profile::getId,
+	// 			profile -> countMap.getOrDefault(profile.getId(), 0L)
+	// 		));
+	// }
 
-		// 1. DTO로 카운트 조회
-		List<PostCountDto> postCounts = postRepository.countPostsByProfile(profiles);
-
-		// 2. DTO를 Map으로 변환
-		Map<Long, Long> countMap = postCounts.stream()
-			.collect(Collectors.toMap(
-				PostCountDto::profileId,
-				PostCountDto::postCount
-			));
-
-		// 3. 포스트가 없는 프로필들도 0으로 포함
-		return profiles.stream()
-			.collect(Collectors.toMap(
-				Profile::getId,
-				profile -> countMap.getOrDefault(profile.getId(), 0L)
-			));
+	//TODO: 구현 부탁드립니다 countByProfile(profileId) 리턴만 하시면 됩니다
+	@Override
+	public long countPostsByProfileId(long profileId) {
+		return 0;
 	}
 
+	//TODO: 구현해주세요
+	@Override
+	public Map<Long, Long> countPostsByProfileIds(List<Long> profileIds){
+		return null;
+	}
 }
