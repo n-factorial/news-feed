@@ -361,7 +361,7 @@ JWT 토큰 관리, 비밀번호 암호화, 토큰 블랙리스트 등 엔터프�
 ## 📞 문의
 
 프로젝트에 대한 질문이나 제안이 있으시면, 다음 연락처로 문의해주세요:
--   **이메일**: [팀장님](sooh59599@gmail.com)
+-   **이메일**: [**박수현** 팀장님](mailto:sooh59599@gmail.com)
 -   **GitHub Issues**: [Issues Page](https://github.com/n-factorial/news-feed/issues)
 
 ---
